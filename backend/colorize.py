@@ -3,13 +3,10 @@ from pathlib import Path
 import torch
 from PIL import Image, UnidentifiedImageError
 
-# Ensure dummy folder exists for DeOldify
 Path('dummy').mkdir(exist_ok=True)
 
-# Initialize DeOldify colorizer
 colorizer = get_image_colorizer(artistic=True)
 
-# Lazy-load GFPGAN only when needed
 def init_gfpgan():
     from gfpgan import GFPGANer
     model_path = 'gfpgan/weights/GFPGANv1.4.pth'
@@ -24,7 +21,6 @@ def init_gfpgan():
 def colorize_image(input_path, output_path, restore_faces=False):
     input_path, output_path = Path(input_path), Path(output_path)
 
-    # 1. Colorize image
     try:
         colorizer.plot_transformed_image(
             path=input_path,
@@ -36,7 +32,6 @@ def colorize_image(input_path, output_path, restore_faces=False):
     except Exception as e:
         raise RuntimeError(f"Colorization failed: {e}")
 
-    # Locate generated file
     rendered_path = None
     for ext in ['.jpg', '.jpeg', '.png']:
         candidate = output_path.parent / f"{input_path.stem}{ext}"
@@ -46,7 +41,6 @@ def colorize_image(input_path, output_path, restore_faces=False):
     if not rendered_path:
         raise FileNotFoundError(f"No rendered output found for {input_path.stem}")
 
-    # 2. Save final colorized image (unmodified)
     ext = output_path.suffix.lstrip('.').lower()
     format_map = {'jpg': 'JPEG', 'jpeg': 'JPEG', 'png': 'PNG'}
     fmt = format_map.get(ext, 'PNG')
@@ -57,13 +51,11 @@ def colorize_image(input_path, output_path, restore_faces=False):
     except Exception as e:
         raise RuntimeError(f"Error processing final image: {e}")
 
-    # Clean up temp file
     try:
         rendered_path.unlink()
     except:
         pass
 
-    # 3. Apply face restoration if requested
     if restore_faces:
         restorer = init_gfpgan()
         import numpy as np
