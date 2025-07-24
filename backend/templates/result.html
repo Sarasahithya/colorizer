@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Colorized Result</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>✨ Your Colorized Image</h1>
+    <div class="image-wrapper">
+      <div class="image-box">
+        <h3>Original</h3>
+        <img src="{{ url_for('static', filename=original_image) }}" alt="Original Image">
+      </div>
+      <div class="image-box">
+        <h3>Colorized</h3>
+        <img src="{{ url_for('static', filename=colorized_image) }}" alt="Colorized Image">
+      </div>
+    </div>
+    <a href="{{ url_for('index') }}" class="back-button" style="margin-top: 30px;">⬅ Colorize Another</a>
+  </div>
+</body>
+</html>
