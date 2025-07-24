@@ -31,19 +31,15 @@ def index():
         input_path = os.path.join(UPLOAD_FOLDER, filename)
         file.save(input_path)
 
-        # Face restoration toggle
         restore_faces = request.form.get("restore") == "on"
 
-        # Output filename
         base, ext = os.path.splitext(filename)
         output_filename = f"{base}_colorized{ext.lower()}"
         output_path = os.path.join(OUTPUT_FOLDER, output_filename)
 
-        # Colorize (only if not already processed)
         if not os.path.exists(output_path):
             colorize_image(input_path, output_path, restore_faces)
 
-        # Resize only the colorized image if needed
         resize_width = request.form.get("resize_width")
         resize_height = request.form.get("resize_height")
         try:
