@@ -3,3 +3,10 @@ __pycache__/
 *.pyc
 *.pyo
 *.ipynb_checkpoints/
+*.pth
+*.jpg
+*.jpeg
+*.png
+/backend/static/output/
+/backend/gfpgan/weights/
+/backend/models/
